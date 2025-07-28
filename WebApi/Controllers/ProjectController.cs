@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("Project")]
+[Route("Projects")]
 public class ProjectController(IProjectService projectService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllProjectsAsync()
     {
-        await projectService.GetAllAsync();
-        return Ok();
+        var projects = await projectService.GetAllAsync();
+        return Ok(projects);
     }
     
     [HttpGet("{id:int}")]
@@ -30,8 +30,8 @@ public class ProjectController(IProjectService projectService) : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        await projectService.CreateAsync(projectCreateDto);
-        return NoContent();
+        var projectId = await projectService.CreateAsync(projectCreateDto);
+        return Ok(new { id = projectId });
     }
     
     [HttpPost("{projectId}/add-employee/{employeeId}")]
@@ -46,6 +46,13 @@ public class ProjectController(IProjectService projectService) : ControllerBase
     {
         var result = await projectService.FilterAsync(filterDto, cancellationToken);
         return Ok(result);
+    }
+    
+    [HttpPost("{id}/documents")]
+    public async Task<IActionResult> UploadDocuments(int id, List<IFormFile> files, CancellationToken cancellationToken)
+    {
+        await projectService.UploadDocumentsAsync(id, files, cancellationToken);
+        return Ok(new { message = "Documents uploaded successfully" });
     }
 
     [HttpPut("{id:int}")]

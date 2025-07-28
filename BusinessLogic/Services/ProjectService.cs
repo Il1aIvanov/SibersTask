@@ -2,6 +2,7 @@ using DataAccess.Models;
 using DataAccess.Repositories.Interfaces;
 using BusinessLogic.Services.Interfaces;
 using BusinessLogic.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services;
@@ -11,9 +12,10 @@ internal class ProjectService(
     IEmployeeRepository employeeRepository) 
     : IProjectService
 {
-    public async Task<IEnumerable<Project>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ProjectDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await projectRepository.GetAllAsync(cancellationToken);
+        var projects = await projectRepository.GetAllAsync(cancellationToken);
+        return projects.Select(ProjectDto.FromEntity);
     }
 
     public async Task<ProjectDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -100,7 +102,29 @@ internal class ProjectService(
         return projects.Select(ProjectDto.FromEntity);
     }
     
-    private IQueryable<Project> ApplyFilters(IQueryable<Project> query, ProjectFilterDto filter)
+    public async Task UploadDocumentsAsync(int projectId, List<IFormFile> files, CancellationToken cancellationToken = default)
+    {
+        if (files == null || files.Count == 0)
+            throw new NullReferenceException("Not found files for download");
+
+        var project = await projectRepository.GetByIdAsync(projectId, cancellationToken);
+        if (project == null)
+            throw new NullReferenceException($"Project with id={projectId} not found");
+
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", projectId.ToString());
+
+        if (!Directory.Exists(uploadsFolder))
+            Directory.CreateDirectory(uploadsFolder);
+
+        foreach (var file in files)
+        {
+            var filePath = Path.Combine(uploadsFolder, file.FileName);
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream, cancellationToken);
+        }
+    }
+    
+    private static IQueryable<Project> ApplyFilters(IQueryable<Project> query, ProjectFilterDto filter)
     {
         if (filter.StartDateFrom.HasValue)
             query = query.Where(p => p.StartDate >= filter.StartDateFrom.Value);
@@ -120,7 +144,7 @@ internal class ProjectService(
         return query;
     }
 
-    private IQueryable<Project> ApplySorting(IQueryable<Project> query, ProjectFilterDto filter)
+    private static IQueryable<Project> ApplySorting(IQueryable<Project> query, ProjectFilterDto filter)
     {
         if (string.IsNullOrWhiteSpace(filter.OrderBy))
             return query;
@@ -139,7 +163,7 @@ internal class ProjectService(
                 ? query.OrderByDescending(p => p.ProjectName) 
                 : query.OrderBy(p => p.ProjectName),
 
-            _ => query // fallback без сортировки
+            _ => query 
         };
     }
 }

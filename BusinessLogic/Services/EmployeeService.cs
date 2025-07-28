@@ -7,9 +7,11 @@ namespace BusinessLogic.Services;
 
 internal class EmployeeService(IEmployeeRepository employeeRepository) : IEmployeeService
 {
-    public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<EmployeeDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await employeeRepository.GetAllAsync(cancellationToken);
+        var employees = await employeeRepository.GetAllAsync(cancellationToken);
+
+        return employees.Select(EmployeeDto.FromEntity);
     }
     
     public async Task<EmployeeDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -20,7 +22,7 @@ internal class EmployeeService(IEmployeeRepository employeeRepository) : IEmploy
 
         return EmployeeDto.FromEntity(employee);
     }
-
+    
     public async Task<int> CreateAsync(EmployeeCreateDto dto, CancellationToken cancellationToken = default)
     {
         var employee = new Employee()

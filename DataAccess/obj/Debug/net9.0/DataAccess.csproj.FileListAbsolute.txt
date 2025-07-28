@@ -26,3 +26,4 @@
 /Users/iliaivanov/Programming/SibersTask/DataAccess/obj/Debug/net9.0/DataAccess.pdb
 /Users/iliaivanov/Programming/SibersTask/DataAccess/obj/Debug/net9.0/DataAccess.genruntimeconfig.cache
 /Users/iliaivanov/Programming/SibersTask/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll
+/Users/iliaivanov/Programming/SibersTask/DataAccess/obj/Debug/net9.0/DataAccess.sourcelink.json

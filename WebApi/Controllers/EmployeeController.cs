@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("Employee")]
+[Route("Employees")]
 public class EmployeeController(IEmployeeService employeeService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllEmployeesAsync()
     {
-        await employeeService.GetAllAsync();
-        return Ok();
+        var employees = await employeeService.GetAllAsync();
+        return Ok(employees);
     }
 
     [HttpGet("{id:int}")]

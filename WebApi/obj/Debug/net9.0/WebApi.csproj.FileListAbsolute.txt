@@ -272,3 +272,4 @@
 /Users/iliaivanov/Programming/SibersTask/WebApi/obj/Debug/net9.0/WebApi.pdb
 /Users/iliaivanov/Programming/SibersTask/WebApi/obj/Debug/net9.0/WebApi.genruntimeconfig.cache
 /Users/iliaivanov/Programming/SibersTask/WebApi/obj/Debug/net9.0/ref/WebApi.dll
+/Users/iliaivanov/Programming/SibersTask/WebApi/obj/Debug/net9.0/WebApi.sourcelink.json

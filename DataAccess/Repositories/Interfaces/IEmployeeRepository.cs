@@ -9,4 +9,5 @@ public interface IEmployeeRepository
     Task CreateAsync(Employee employee, CancellationToken cancellationToken = default);
     Task UpdateAsync(Employee employee, CancellationToken cancellationToken = default);
     Task DeleteAsync(Employee employee, CancellationToken cancellationToken = default);
+    
 }

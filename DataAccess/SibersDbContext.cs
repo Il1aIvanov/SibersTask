@@ -34,10 +34,12 @@ public class SibersDbContext(DbContextOptions<SibersDbContext> options) : DbCont
             .IsRequired();
     
         entity.Property(p => p.StartDate)
-            .IsRequired();
-    
+            .IsRequired()
+            .HasColumnType("timestamp without time zone");
+
         entity.Property(p => p.EndDate)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("timestamp without time zone");
     
         entity.Property(p => p.Priority)
             .IsRequired();

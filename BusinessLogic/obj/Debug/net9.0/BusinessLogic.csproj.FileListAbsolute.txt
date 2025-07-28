@@ -28,3 +28,4 @@
 /Users/iliaivanov/Programming/SibersTask/BusinessLogic/obj/Debug/net9.0/refint/BusinessLogic.dll
 /Users/iliaivanov/Programming/SibersTask/BusinessLogic/obj/Debug/net9.0/BusinessLogic.pdb
 /Users/iliaivanov/Programming/SibersTask/BusinessLogic/obj/Debug/net9.0/ref/BusinessLogic.dll
+/Users/iliaivanov/Programming/SibersTask/BusinessLogic/obj/Debug/net9.0/BusinessLogic.sourcelink.json

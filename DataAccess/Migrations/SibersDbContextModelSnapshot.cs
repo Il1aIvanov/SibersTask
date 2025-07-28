@@ -72,7 +72,7 @@ namespace DataAccess.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ExecutorCompanyName")
                         .IsRequired()
@@ -91,7 +91,7 @@ namespace DataAccess.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
